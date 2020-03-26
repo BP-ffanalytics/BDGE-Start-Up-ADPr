@@ -13,7 +13,7 @@ Once the shiny library is installed, you can run the app directly from Github us
 
 ```r
 library(shiny)
-runGitHub("BDGE-Start-Up-ADPr", "bdpiccolo")
+runGitHub("BDGE-Start-Up-ADPr", "BP-ffanalytics")
 ```
 
 I will be updating the mock drafts periodically.  
