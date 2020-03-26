@@ -13,8 +13,12 @@ Once the shiny library is installed, you can run the app directly from Github us
 
 ```r
 library(shiny)
-runGitHub("ACNC-DAME", "bdpiccolo")
+runGitHub("BDGE-Start-Up-ADPr", "bdpiccolo")
 ```
 
 I will be updating the mock drafts periodically.  
 
+
+## Acknowledgment
+
+This Shiny app was modeled after [BallR](https://github.com/toddwschneider/ballr).  Great app, please check it out if you have time.
