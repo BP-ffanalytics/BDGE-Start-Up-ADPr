@@ -40,7 +40,7 @@ shinyUI(
           radioButtons(inputId = "datatype", 
 					   label = "Data Type",
 					   choices = list("Single Player" = 2, "All Data" = 1), 
-					   selected = 2),
+					   selected = 1),
 								
 			
           radioButtons(inputId = "BDGEdat", 

@@ -435,27 +435,6 @@ shinyServer(function(input, output, session) {
 		MockDF
 	})	
 
-	output$testTEXT <- renderPrint({	
-		req(playerMOCKdata())
-		playerMOCKdata <- playerMOCKdata()
-		player_name <- input$player_name	
-		playerMOCKdata <- playerMOCKdata[!(playerMOCKdata$Pick %in% NA),]
-		playerMOCKdata$Position <- 1:nrow(playerMOCKdata)
-		playerMOCKdata$ADP <- mean(playerMOCKdata$Pick)
-		playerMOCKdata$MDP <- median(playerMOCKdata$Pick)
-		if(player_name %in% PlayerMetadata$Player){
-			play <- PlayerMetadata[PlayerMetadata$Player %in% player_name,]
-			teamPcolor <- nflteams[nflteams$abbr == play[,"CurrentTeamAbbr"],"primary"]
-			teamScolor <- nflteams[nflteams$abbr == play[,"CurrentTeamAbbr"],"secondary"]
-		} else {
-			
-			teamPcolor <- "#E03A3E"
-			teamScolor <- "#000000"
-		}
-		# list(teamPcolor,teamScolor)
-		list(player_name,PlayerMetadata$player, head(PlayerMetadata))
-	
-	})	
 	 
 	output$playerTIME <- renderPlotly({
 		req(playerMOCKdata())
