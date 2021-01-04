@@ -272,7 +272,7 @@ shinyServer(function(input, output, session) {
 		if(input$datatype == 1) {
 		  list(
 			div(class = "col-sm-8 col-md-9",
-			verbatimTextOutput("testTEXT"),
+			# verbatimTextOutput("testTEXT"),
 				div(class = "shot-chart-container",
 				  div(class = "shot-chart-header",
 					
@@ -318,7 +318,7 @@ shinyServer(function(input, output, session) {
 		  )
 		} else {
 			list(
-		verbatimTextOutput("testTEXT"),
+		# verbatimTextOutput("testTEXT"),
 				div(class = "col-sm-8 col-md-9",
 					div(class = "shot-chart-container",
 					  div(class = "shot-chart-header",
@@ -404,9 +404,9 @@ shinyServer(function(input, output, session) {
 		}
 	})
   
-	output$testTEXT <- renderPrint({	
+	# output$testTEXT <- renderPrint({	
 	
-	})	
+	# })	
 	
 	output$teamlogo <- renderUI({	
 		player_name <- input$player_name
