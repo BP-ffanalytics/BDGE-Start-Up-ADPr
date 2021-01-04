@@ -48,6 +48,12 @@ shinyUI(
 					   choices = list("Yes" = 1, "No" = 2), 
 					   selected = 1),
 					
+			
+          radioButtons(inputId = "Rookiedraft", 
+					   label = "Rookie Draft",
+					   choices = list("Yes" = 1, "No" = 2), 
+					   selected = 2),
+					
           radioButtons(inputId = "rooks", 
 					   label = "Mocks with Rookies",
 					   choices = list("Yes" = 1, "No" = 2), 
@@ -58,7 +64,7 @@ shinyUI(
 				radioButtons(inputId = "nolabrooks", 
 							 label = "Include non-player Rookie Picks",
 							 choices = list("Yes" = 1, "No" = 2), 
-							 selected = 1)
+							 selected = 2)
 		  ),
 					   
           dateRangeInput(inputId = "date_range",
@@ -72,24 +78,19 @@ shinyUI(
 							 selected = unique(ADP_metadata_DF$Event)),
 							 
           checkboxGroupInput(inputId = "leaguetype",
-							 choices = unique(ADP_metadata_DF$LeagueType),
+							 choices = unique(ADP_metadata_DF$League),
 							 label = "League Type",
-							 selected = unique(ADP_metadata_DF$LeagueType)),
+							 selected = unique(ADP_metadata_DF$League)),
 							 
-		  sliderInput(inputId = "MaxRound", 
-					  label = "Maximum Rounds", 
-					  min = 12, 
-					  max = 28, 
-					  value = c(12, 28),
+		  sliderInput(inputId = "MinPartic", 
+					  label = "Minimum Participants", 
+					  min = 7, 
+					  max = 12, 
+					  value = 7,
 					  step=1),
+     
+		  uiOutput("TotalRoundsRender"),
     
-		  sliderInput(inputId = "MinNumb", 
-					  label = "Min/Max in Draft", 
-					  min = 1, 
-					  max = nrow(ADP_metadata_DF), 
-					  value = c(2, nrow(ADP_metadata_DF)),
-					  step=1
-		  )
 		  
 		 
 						

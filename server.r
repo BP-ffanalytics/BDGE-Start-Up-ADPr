@@ -6,109 +6,131 @@ source("global.r")
 
 shinyServer(function(input, output, session) {
 
-	
+
 	MetaDF <- reactive({
+
+		# Subset based on BDGE league
 		if(input$BDGEdat == 1) {
 			MetaBDGE <- droplevels(ADP_metadata_DF[grepl("BDGE", ADP_metadata_DF$Mock),])
 		} else {
 			MetaBDGE <- ADP_metadata_DF
 		}
-		if(input$rooks == 1) {
-			MetaRooks <- MetaBDGE
+		# Subset if rookie draft
+		if(input$Rookiedraft == 1) {
+			MetaRooks2 <- droplevels(MetaBDGE[MetaBDGE$League %in% "rookie",])			
+			MetaDate <- droplevels(MetaRooks2[MetaRooks2$Date >= input$date_range[1] & MetaRooks2$Date <= input$date_range[2], ])
+			MetaRooks2 <- MetaDate
+						
+			# need to fix if rookie draft is set to yes and no rooks is set to yes
+		} else {	
+			# if no rookie draft, check to see if rookies are included in mocks
+			MetaRooks <- droplevels(MetaBDGE[!(MetaBDGE$Rookie == "rookie"),])
+			if(input$rooks == 1) {
+				# If yes, then no change to data
+				MetaRooks2 <- MetaRooks
+			} else {
+				# If no rookies, then only keep data with rookies
+				MetaRooks2 <- droplevels(MetaRooks[MetaRooks$Rookie %in% "No Rookie",])
+				if(nrow(MetaRooks2) == 0) MetaRooks2 <- MetaRooks
+			}
+			
+		}
+		MetaDate <- droplevels(MetaRooks2[MetaRooks2$Date >= input$date_range[1] & MetaRooks2$Date <= input$date_range[2], ])
+		MetaEvent <- droplevels(MetaDate[MetaDate$Event %in% input$event,])
+		MetaLeag <- droplevels(MetaEvent[MetaEvent$League %in% input$leaguetype,])
+		MetaPart <- droplevels(MetaLeag[MetaLeag$TotalParticipants >= input$MinPartic,])
+		MetaDF <- MetaPart
+		MetaDF
+			
+	})
+
+	output$TotalRoundsRender <- renderUI({ 
+		MetaDF <- MetaDF()		
+		MetaDF <- MetaDF()		
+		if(input$Rookiedraft == 1) {
+		  list(
+				
+			  sliderInput(inputId = "MaxRound", 
+						  label = "Maximum Rounds", 
+						  min = min(MetaDF$TotalRounds), 
+						  max = max(MetaDF$TotalRounds), 
+						  value = c(min(MetaDF$TotalRounds), max(MetaDF$TotalRounds)),
+						  step=1),
+						  
+			  sliderInput(inputId = "MinNumb", 
+						  label = "Min/Max in Draft", 
+						  min = 1, 
+						  max = nrow(MetaDF), 
+						  value = c(2, nrow(MetaDF)),
+						  step=1
+			  )
+		  )
 		} else {
-			MetaRooks <- droplevels(MetaBDGE[MetaBDGE$Rookie == "No Rookies",])
+		  list(
+			  sliderInput(inputId = "MaxRound", 
+						  label = "Maximum Rounds", 
+						  min = min(MetaDF$TotalRounds), 
+						  max = max(MetaDF$TotalRounds), 
+						  value = c(min(MetaDF$TotalRounds), max(MetaDF$TotalRounds)),
+						  step=1),
+						  
+			  sliderInput(inputId = "MinNumb", 
+						  label = "Min/Max in Draft", 
+						  min = 1, 
+						  max = nrow(MetaDF), 
+						  value = c(20, nrow(MetaDF)),
+						  step=1
+			  )
+			)  
 		}
 		
-		MetaDate <- droplevels(MetaRooks[MetaRooks$Date >= input$date_range[1] & MetaRooks$Date <= input$date_range[2], ])
-		MetaEvent <- droplevels(MetaDate[MetaDate$Event %in% input$event,])
-		MetaLeag <- droplevels(MetaEvent[MetaEvent$LeagueType %in% input$leaguetype,])
-		MetaLeag
 	})
-
-
-	MockDF <- reactive({
+	
+	PlayerPosFINAL <- reactive({		
 		req(MetaDF())
 		MetaDF <- MetaDF()
-		if(nrow(MetaDF) == 0) {
-			BDGEmocks <- ADPdata_DF[,grepl("BDGE", colnames(ADPdata_DF))]
-			ADPmetasub <- ADPdata_DF[,colnames(ADPdata_DF) %in% c("Round", colnames(BDGEmocks))]
-			NAlogic <- apply(ADPmetasub[,-1, drop=FALSE], 2, function(x) x %in% NA)
-			LastPick <- apply(NAlogic, 2, function(x) which(x==TRUE)[1])-1
-			DraftnumDF <- data.frame(Round=ADPmetasub[,"Round"], Pick=1:nrow(ADPmetasub), stringsAsFactor=FALSE)
-			LastRound <- as.numeric(as.character(sapply(LastPick, function(x) DraftnumDF[DraftnumDF$Pick == x, "Round"])))
-			names(LastRound) <- colnames(NAlogic)
-			DraftRound <- LastRound[LastRound >= input$MaxRound[1] & LastRound <= input$MaxRound[2]]
-			MockDF <- ADPmetasub[,colnames(ADPmetasub) %in% names(DraftRound), drop=FALSE]
+		MinNumb <- input$MinNumb
+		MinNumb
+		
+		## Identify players with min and max draft inclusion
 
-		} else {
-			ADPmetasub <- ADPdata_DF[,colnames(ADPdata_DF) %in% c("Round", MetaDF$Mock)]
-			NAlogic <- apply(ADPmetasub[,-1, drop=FALSE], 2, function(x) x %in% NA)
-			LastPick <- apply(NAlogic, 2, function(x) which(x==TRUE)[1])-1
-			DraftnumDF <- data.frame(Round=ADPmetasub[,"Round"], Pick=1:nrow(ADPmetasub), stringsAsFactor=FALSE)
-			LastRound <- as.numeric(as.character(sapply(LastPick, function(x) DraftnumDF[DraftnumDF$Pick == x, "Round"])))
-			names(LastRound) <- colnames(NAlogic)
-			DraftRound <- LastRound[LastRound >= input$MaxRound[1] & LastRound <= input$MaxRound[2]]
-			ADPmetasub[,colnames(ADPmetasub) %in% names(DraftRound), drop=FALSE]
-		}
-	})
-
-	MockDF_FINAL <- reactive({
-		req(MockDF())
-		MockDF <- MockDF()
-		if(ncol(MockDF) == 0) {
-			BDGEmocks <- ADPdata_DF[,grepl("BDGE", colnames(ADPdata_DF))]
-		} else {
-			BDGEmocks <- MockDF
-		}
-		BDGEmocks
+		PlayerPos_meta <- PlayerPos_DF[,colnames(PlayerPos_DF) %in% c("playerID","team","position","first_name","last_name","player",MetaDF$MockID)]
+		PlayerPos_nometadat <- PlayerPos_meta[, !(colnames(PlayerPos_meta) %in% c("playerID","team","position","first_name","last_name","player"))]
+		rownames(PlayerPos_nometadat) <- PlayerPos_meta$player
+		# Sum actual picks (ie., non NA)
+		NonNAcount <- sapply(1:(nrow(PlayerPos_nometadat)), function(x) {
+			player <- unlist(PlayerPos_nometadat[x,1:(ncol(PlayerPos_nometadat))])
+			NonNA <- ncol(PlayerPos_nometadat) - sum(player %in% NA)
+			names(NonNA) <- rownames(PlayerPos_nometadat)[x]
+			NonNA
+		})
+		
+		PlayerPos_meta_wnNA <- full_join(PlayerPos_meta, data.frame(nonNA=NonNAcount, player=names(NonNAcount)), by="player")
+		PlayerPos_metaMIN <- PlayerPos_meta_wnNA[PlayerPos_meta_wnNA$nonNA >= MinNumb[1],]
+		PlayerPosFINAL <- PlayerPos_metaMIN[PlayerPos_metaMIN$nonNA <= MinNumb[2],!(colnames(PlayerPos_metaMIN) %in% c("playerID","team","position","first_name","last_name","nonNA"))]
+		PlayerPosFINAL
 	})
 
 	Players <- reactive({
-		req(MockDF_FINAL())
-		MockDF_FINAL <- MockDF_FINAL()
+		req(PlayerPosFINAL())
+		PlayerPosFINAL <- PlayerPosFINAL()
 		## Extract players
-		unique(as.character(unlist(MockDF_FINAL)))[!(unique(as.character(unlist(MockDF_FINAL))) %in% NA)]		
+		PlayerPosFINAL$player		
 	})
 
 	PlayerPos <- reactive({
-		req(Players()) 
-		MockDF_FINAL <- MockDF_FINAL()
-		Players <- Players()
-		PlayerPos <- do.call("rbind", lapply(Players, function(plys) {
-			Ddf <- as.data.frame(lapply(MockDF_FINAL,  function(dft) {
-				dpos <- which(dft %in% plys)
-				if(length(dpos) == 0) dpos <- NA
-				dpos
-			}))
-			Ddf$Player <- plys
-			Ddf
-		}))
-		PlayerPos
-	})
-
-	PlayerPosFINAL <- reactive({
-		req(PlayerPos())
-		PlayerPos <- PlayerPos()
+		req(PlayerPosFINAL()) 
+		PlayerPosFINAL <- PlayerPosFINAL()
 		MetaDF <- MetaDF()
-		MinNumb <- input$MinNumb
-		# apply(PlayerPos[,!(grepl("Player", colnames(PlayerPos)))], 1, function(x) (x %in% NA))
-		NAcount <- apply(PlayerPos[,!(grepl("Player", colnames(PlayerPos)))], 1, function(x) nrow(MetaDF) - sum(x %in% NA))
-		PlayerPos_minn <- PlayerPos[NAcount >= MinNumb[1] & NAcount <= MinNumb[2],]
-		if(input$nolabrooks == 1){
-			PlayerPos_rookLab <- PlayerPos_minn
-		} else {
-			PlayerPos_rookLab <- PlayerPos_minn[!(grepl("ROOKIE", PlayerPos_minn$Player)),]
-		}
-		PlayerPos_rookLab
+		PlayerPosFINAL[,!(colnames(PlayerPosFINAL) %in% c("playerID","team","position","first_name","last_name"))]
 	})
 	
 	DraftStats <- reactive({
 		req(PlayerPosFINAL())
-		
 		PlayerPosFINAL <- PlayerPosFINAL()
 		DraftStats <- PlayerPosFINAL %>% 
-			gather(Drafts, Position, -Player) %>%
-			group_by(Player) %>%
+			gather(Drafts, Position, -player) %>%
+			group_by(player) %>%
 			summarize(
 				n = length(Position[!(Position %in% NA)]),
 				ADP=mean(Position, na.rm=TRUE), 
@@ -122,73 +144,67 @@ shinyServer(function(input, output, session) {
 				error=qnorm(0.975)*SD/sqrt(n),
 				Uconf = ifelse(n > 1, ADP + error, ADP),
 				Lconf = ifelse(n > 1, ADP - error, ADP)
-			) %>% as.data.frame()	
-		DraftStats$Player <- factor(as.character(DraftStats$Player), levels=as.character(DraftStats$Player))
-		DraftStats <- DraftStats[order(DraftStats$Player),]
-		DraftStats
+			) %>%
+			mutate(
+				Lconf = ifelse(Lconf < 0, 0, Lconf)
+			) %>% as.data.frame()
+			
+		DraftStats$player <- factor(as.character(DraftStats$player), levels=as.character(DraftStats$player))
+		DraftStats[order(DraftStats$player),]
+		
 		
 	})
-	
+
 	AllADPdata <- reactive({
 		req(DraftStats())
 		DraftStats <- DraftStats()
 		PlayerPos <- PlayerPos()
 		DraftStats$Rank <- rank(DraftStats$ADP)
-		DS <- droplevels(DraftStats[DraftStats$Rank %in% seq(1, input$numdisplay, 0.5),])
-		
-		if(input$rooks == 1) {
-			if(input$onlyrooks == 2){
-				DS <- droplevels(DS[!(DS$Player %in% PlayerMetadata$Player),])
-			} else {
-				DS <- DS
-			}
-		} else {
-			DS <- DS
-		}
-		
-		DP <- droplevels(PlayerPos[PlayerPos$Player %in% levels(DS$Player),])
-		DPmelt <- PlayerPos %>% reshape2::melt()
-		DPmelt$Player <- factor(DPmelt$Player, levels=levels(DS$Player))
-		DPmelt$label <- NA
-		if(input$rooks == 1) {
-			if(input$onlyrooks == 2){
-				DPmelt <- droplevels(DPmelt[!(DPmelt$Player %in% PlayerMetadata$Player),])
-			} else {
-				DPmelt <- DPmelt
-			}
-		} else {
-			DPmelt <- DPmelt
-		}
-		if(input$DPtype == "adp") {
-			DPmelt2 <- do.call(rbind, lapply(levels(DPmelt$Player), function(x) {
-				DAT <- droplevels(DPmelt[DPmelt$Player %in% x,])
-				ADP <- mean(DAT$value, na.rm=TRUE)
-				DAT$label <- paste0(DAT$Player, ": ADP=", as.character(round(ADP, 1)), "; n=",length(DAT$value[!(DAT$value %in% NA)]))
-				DAT
-			}))
-		} else {
-			DPmelt2 <- do.call(rbind, lapply(levels(DPmelt$Player), function(x) {
-				DAT <- droplevels(DPmelt[DPmelt$Player %in% x,])
-				MDP <- median(DAT$value, na.rm=TRUE)
-				DAT$label <- paste0(DAT$Player, ": MDP=", as.character(round(MDP, 1)), "; n=",length(DAT$value[!(DAT$value %in% NA)]))
-				DAT
-			}))
-		}
-		DPmelt2$label <- factor(DPmelt2$label, levels=unique(DPmelt2[order(DPmelt2$Player),"label"]))
-		list(DS=DS, DPmelt2=DPmelt2)
-
-		
-	})
 	
+		DPmelt <- PlayerPos %>% reshape2::melt()
+		DPmelt$player <- factor(DPmelt$player, levels=levels(DraftStats$player))
+		DPmelt$label <- NA
+		
+		if(input$DPtype == "adp") {
+			DPmelt2 <- do.call(rbind, lapply(levels(DPmelt$player), function(x) {
+				DAT <- droplevels(DPmelt[DPmelt$player %in% x,])
+				ADP <- mean(DAT$value, na.rm=TRUE)
+				DAT$label <- paste0(DAT$player, ": ADP=", as.character(round(ADP, 1)), "; n=",length(DAT$value[!(DAT$value %in% NA)]))
+				DAT
+			}))
+		} else {
+			DPmelt2 <- do.call(rbind, lapply(levels(DPmelt$player), function(x) {
+				DAT <- droplevels(DPmelt[DPmelt$player %in% x,])
+				MDP <- median(DAT$value, na.rm=TRUE)
+				DAT$label <- paste0(DAT$player, ": MDP=", as.character(round(MDP, 1)), "; n=",length(DAT$value[!(DAT$value %in% NA)]))
+				DAT
+			}))
+		}
+		DPmelt2$label <- factor(DPmelt2$label, levels=unique(DPmelt2[order(DPmelt2$player),"label"]))
+		
+		list(DS=DraftStats, DPmelt2=DPmelt2)
+	})
+
+
 	output$ADPplotly <- renderPlotly({
 		req(AllADPdata())
 		DS <- AllADPdata()$DS
 		DPmelt2 <- AllADPdata()$DPmelt2
+		DSdisplay <- droplevels(DS[DS$Rank %in% seq(1, input$numdisplay, 0.5),])
+		if(input$DPposition == "all") {
+			DSposition <- DSdisplay
+		} else {
+			if(input$DPposition == "onlyrooks") {
+				DSposition <- DSdisplay[DSdisplay$player %in% PlayerMetadata[PlayerMetadata$DraftYear == 2020,"Player"],]
+			} else {
+				DSposition <- DSdisplay[DSdisplay$player %in% PlayerMetadata[PlayerMetadata$Position %in% input$DPposition,"Player"],]
+			}
+		}
 		
 		if(input$ADPplot == "dot"){
-			p <- plot_ly(DS, 
+			p <- plot_ly(DSposition, 
 						x = ~ADP, 
-						y = ~Player, 
+						y = ~player, 
 						type = 'scatter',
 						mode = "markers", 
 						marker = list(color = "black",
@@ -203,10 +219,10 @@ shinyServer(function(input, output, session) {
 			  yref = "y"
 			)
 			lines <- list()
-			for(i in 1:nrow(DS)){
-			line[["x0"]] <- DS$Lconf[i]
-			  line[["x1"]] <- DS$Uconf[i]
-			  line[c("y0", "y1")] <- as.character(DS$Player)[i]
+			for(i in 1:nrow(DSposition)){
+			line[["x0"]] <- DSposition$Lconf[i]
+			  line[["x1"]] <- DSposition$Uconf[i]
+			  line[c("y0", "y1")] <- as.character(DSposition$player)[i]
 			  lines <- c(lines, list(line))
 			}
 			p %>% layout(shapes = lines,
@@ -214,12 +230,13 @@ shinyServer(function(input, output, session) {
 				yaxis = list(title = ""),
 				margin = list(l = 100)) 
 		} else {
-		
+			DPmelt3 <- droplevels(DPmelt2[as.character(DPmelt2$player) %in% as.character(DSposition$player),])
+			head(DPmelt3)
 			p <- plot_ly(type = "box")
-			for(i in 1:nlevels(DPmelt2$label)) {
-				DPplayer <- droplevels(DPmelt2[DPmelt2$label %in% levels(DPmelt2$label)[i],])
+			for(i in 1:nlevels(DPmelt3$label)) {
+				DPplayer <- droplevels(DPmelt3[DPmelt3$label %in% levels(DPmelt3$label)[i],])
 				p <- p %>% add_boxplot(x = as.numeric(DPplayer$value), 
-									   name = levels(DPmelt2$label)[i], 
+									   name = levels(DPmelt3$label)[i], 
 									   boxpoints = 'outliers',
 									   marker = list(color = 'black'),
 											line = list(color = 'black'))
@@ -228,14 +245,15 @@ shinyServer(function(input, output, session) {
 
 		}
 	})
-	
+		
 	 # render the table (with row names)
 	output$ADPtable <- DT::renderDataTable({
 		req(AllADPdata())
 		DS <- AllADPdata()$DS
-		DS <- DS[,c("Player", "n", "ADP", "MDP", "MIN", "MAX")]
+		DS <- DS[,c("player", "n", "ADP", "MDP", "MIN", "MAX")]
+		DS$player <- factor(as.character(DS$player), levels=rev(as.character(DS$player)))
 		DS$ADP <- round(DS$ADP, 2)
-		colnames(DS) <- c("Player", "n", "ADP", "MDP", "Min", "Max")
+		colnames(DS) <- c("player", "n", "ADP", "MDP", "Min", "Max")
 		datatable(DS, extensions='Buttons', rownames = FALSE,
 					options = list(
 						dom = 'lf<"floatright"B>rtip',
@@ -247,57 +265,52 @@ shinyServer(function(input, output, session) {
 		)
 	})	
 	
-	# output$testTEXT <- renderPrint({ 
-		# req(AllADPdata())
-		# DS <- AllADPdata()$DS
-		# DS <- DS[,c("Player", "n", "ADP", "MDP", "MIN", "MAX")]
-		# DS$ADP <- round(DS$ADP, 2)
-		# colnames(DS) <- c("Player", "n", "ADP", "MDP", "Min", "Max")
-		# head(DS)
-	# })	
-
 	
 	output$MainGraphicArea <- renderUI({ 
-		PlayerList <- unique(sort(as.matrix(ADPdata_DF[,!(colnames(ADPdata_DF) %in% c("Round", "RoundPick"))])))
+		PlayerPosFINAL <- PlayerPosFINAL()
+		PlayerList <- sort(PlayerPosFINAL$player)
 		if(input$datatype == 1) {
 		  list(
 			div(class = "col-sm-8 col-md-9",
-			# verbatimTextOutput("testTEXT"),
+			verbatimTextOutput("testTEXT"),
 				div(class = "shot-chart-container",
 				  div(class = "shot-chart-header",
 					
 					fixedRow(
-					column(3, 
-						selectInput(inputId = "ADPplot",
-							  label = "Select Plot",
-							  choices = c("Boxplots" = "box", "Dot Chart" = "dot"),
-							  selected = "box",
-							  selectize = FALSE)
-					),
-					column(3,
-					
-						numericInput(inputId = "numdisplay", 
-								  label = "Displayed Players", 
-								  value = 100)
-					),
-					column(3, 
-						selectInput(inputId = "DPtype",
-							  label = "Draft Position",
-							  choices = c("Average (ADP)" = "adp", "Median (MDP)" = "mdp"),
-							  selected = "adp",
-							  selectize = FALSE)
-					),
-					column(3,
-						radioButtons(inputId = "onlyrooks", 
-							   label = "Only Display Rookies",
-							   choices = list("No" = 1, "Yes" = 2), 
-							   selected = 1)
-					)
+						column(3, 
+							selectInput(inputId = "ADPplot",
+								  label = "Select Plot",
+								  choices = c("Boxplots" = "box", "Dot Chart" = "dot"),
+								  selected = "box",
+								  selectize = FALSE)
+						),
+						column(3,
+						
+							numericInput(inputId = "numdisplay", 
+									  label = "Displayed Players", 
+									  value = 50)
+						),
+						column(3, 
+							selectInput(inputId = "DPtype",
+								  label = "Draft Pick",
+								  choices = c("Average (ADP)" = "adp", "Median (MDP)" = "mdp"),
+								  selected = "adp",
+								  selectize = FALSE)
+						),
+						column(3, 
+							selectInput(inputId = "DPposition",
+								  label = "Player Position",
+								  choices = c("All Positions" = "all", "Quarterbacks" = "QB",
+									"Running Backs" = "RB", "Wide Receivers" = "WR", 
+									"Tight Ends" = "TE", "Rookies Only" = "onlyrooks"),
+								  selected = "adp",
+								  selectize = FALSE)
+						)
 					)
 					
 				  ),
 
-				  plotlyOutput("ADPplotly", width = 800, height = 2000),
+				  plotlyOutput("ADPplotly", width = 800, height = 800),
 				  DT::dataTableOutput('ADPtable')
 				  
 			  )
@@ -305,7 +318,7 @@ shinyServer(function(input, output, session) {
 		  )
 		} else {
 			list(
-		# verbatimTextOutput("testTEXT"),
+		verbatimTextOutput("testTEXT"),
 				div(class = "col-sm-8 col-md-9",
 					div(class = "shot-chart-container",
 					  div(class = "shot-chart-header",
@@ -350,7 +363,7 @@ shinyServer(function(input, output, session) {
 				)
 			)
 		}
-		})		
+		})			
 
 	output$chart_header_player <- renderText({	
 		player_name <- input$player_name
@@ -359,16 +372,22 @@ shinyServer(function(input, output, session) {
 
 	output$chart_header_team = renderText({	
 		player_name <- input$player_name
-		if(player_name %in% PlayerMetadata$Player){
-			play <- PlayerMetadata[PlayerMetadata$Player %in% player_name,]
-			paste0(
-				nflteams[nflteams$abbr == play[,"CurrentTeamAbbr"],"team"],	", ", play[,"Position"],
-				"; Age: ",
-				round(play[,"CurrentAge"],1)
-			)
+		play <- PlayerMetadata[PlayerMetadata$Player %in% player_name,]
+		if(play$Date == as.Date("2020-01-01")){
+			DOB <- "Unknown"
 		} else {
-			"Rookie, data not available until Draft"
+			DOB <- round(play[,"CurrentAge"],1)
 		}
+		if(play$CurrentTeamAbbr %in% NA) {
+			team <- "Rookie"
+		} else {
+			if(play$CurrentTeamAbbr == "FA") {
+				team <- "Free Agent"
+			} else {
+				team <- nflteams[nflteams$abbr == play[,"CurrentTeamAbbr"],"team"]
+			}
+		}
+		paste0(team,	", ", play[,"Position"], "; Age: ", DOB)
 	})
 
 	output$chart_header_draft = renderText({	
@@ -385,6 +404,10 @@ shinyServer(function(input, output, session) {
 		}
 	})
   
+	output$testTEXT <- renderPrint({	
+	
+	})	
+	
 	output$teamlogo <- renderUI({	
 		player_name <- input$player_name
 		if(player_name %in% PlayerMetadata$Player){
@@ -396,23 +419,44 @@ shinyServer(function(input, output, session) {
 		}
 		
 	})
-  
+ 
 	playerMOCKdata <- reactive({ 
 		req(PlayerPosFINAL())
 		PlayerPosFINAL <- PlayerPosFINAL()
 		MetaDF <- MetaDF()
 		player_name <- input$player_name	
-		PlayerDFwide <- PlayerPosFINAL[PlayerPosFINAL$Player %in% player_name,]
-		PlayerDFwide
-		rownames(PlayerDFwide) <- PlayerDFwide$Player
-		PlayerDFwide <- PlayerDFwide[,!(colnames(PlayerDFwide) %in% "Player")]
-		PlayerDFtall <- data.frame(RMock=colnames(PlayerDFwide), Pick = unlist(PlayerDFwide))
-		MetaDF$RMock <- make.names(MetaDF$Mock)
-		MockDF <- inner_join(MetaDF, PlayerDFtall, by="RMock")
+		PlayerDFwide <- PlayerPosFINAL[PlayerPosFINAL$player %in% player_name,]
+		rownames(PlayerDFwide) <- PlayerDFwide$player
+		PlayerDFwide <- PlayerDFwide[,!(colnames(PlayerDFwide) %in% "player")]
+		PlayerDFtall <- data.frame(MockID=colnames(PlayerDFwide), Pick = unlist(PlayerDFwide))
+		MetaDF$MockID <- as.character(MetaDF$MockID)
+		MockDF <- inner_join(MetaDF, PlayerDFtall, by="MockID")
 		
 		MockDF
 	})	
 
+	output$testTEXT <- renderPrint({	
+		req(playerMOCKdata())
+		playerMOCKdata <- playerMOCKdata()
+		player_name <- input$player_name	
+		playerMOCKdata <- playerMOCKdata[!(playerMOCKdata$Pick %in% NA),]
+		playerMOCKdata$Position <- 1:nrow(playerMOCKdata)
+		playerMOCKdata$ADP <- mean(playerMOCKdata$Pick)
+		playerMOCKdata$MDP <- median(playerMOCKdata$Pick)
+		if(player_name %in% PlayerMetadata$Player){
+			play <- PlayerMetadata[PlayerMetadata$Player %in% player_name,]
+			teamPcolor <- nflteams[nflteams$abbr == play[,"CurrentTeamAbbr"],"primary"]
+			teamScolor <- nflteams[nflteams$abbr == play[,"CurrentTeamAbbr"],"secondary"]
+		} else {
+			
+			teamPcolor <- "#E03A3E"
+			teamScolor <- "#000000"
+		}
+		# list(teamPcolor,teamScolor)
+		list(player_name,PlayerMetadata$player, head(PlayerMetadata))
+	
+	})	
+	 
 	output$playerTIME <- renderPlotly({
 		req(playerMOCKdata())
 		playerMOCKdata <- playerMOCKdata()
@@ -470,7 +514,7 @@ shinyServer(function(input, output, session) {
 		req(DraftStats())
 		DraftStats <- DraftStats()
 		player_name <- input$player_name	
-		DS <- DraftStats[DraftStats$Player %in% player_name,c("n","ADP", "MDP", "MIN", "MAX", "SD")]
+		DS <- DraftStats[DraftStats$player %in% player_name,c("n","ADP", "MDP", "MIN", "MAX", "SD")]
 		DStall <- DS %>% gather(Stats, value, -SD)
 		DStall$SD <- ifelse(grepl("ADP", DStall$Stats), DStall$SD, NA)
 		DStall$Stats <- factor(DStall$Stats, levels=c("MIN","ADP", "MAX", "n", "MDP", "SD"))
@@ -495,6 +539,4 @@ shinyServer(function(input, output, session) {
 					mode = 'markers',marker = list(color = teamPcolor),text = ~value, textposition = 'auto')
 	})
 		
-	
-	
 })
