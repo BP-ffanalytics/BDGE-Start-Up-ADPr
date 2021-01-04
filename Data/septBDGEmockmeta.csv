@@ -1,0 +1,118 @@
+"","Mock","MockID","Date","Rookie","Event","TeamNum","League","TEPrem","TotalPicks","TotalRounds","TotalParticipants"
+"1","BDGE March 30","550712016333692928","03/31/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,9
+"2","BDGE March 32","550823246424084480","03/31/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,9
+"3","BDGE March 33","550849323404378112","03/31/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,9
+"4","BDGE April 34","551069991634481152","04/01/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,10
+"5","BDGE April 35","551116614538756096","04/01/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,10
+"6","BDGE April 36","551156281376415744","04/01/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,10
+"7","BDGE April 37","551178335133450240","04/01/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,11
+"8","BDGE April 38","551165669822603264","04/01/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,9
+"9","BDGE April 39","551498250593198080","04/02/2020","With Rookie","Free Agent","12","superflex","TEprem",156,13,9
+"10","BDGE April 40","552242400724750336","04/04/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,10
+"11","BDGE April 41","552351844480880640","04/04/2020","With Rookie","Free Agent","12","superflex","TEprem",156,13,10
+"12","BDGE April 42","552574352342355968","04/05/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,10
+"13","BDGE April 43","552648982905696256","04/05/2020","With Rookie","Free Agent","12","superflex","TEprem",156,13,11
+"14","BDGE April 44","552679896126513152","04/05/2020","With Rookie","Free Agent","12","superflex","TEprem",180,15,11
+"15","BDGE April 45","552888893831811072","04/06/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,10
+"16","BDGE April 46","552920938020110336","04/06/2020","With Rookie","Free Agent","12","superflex","TEprem",156,13,9
+"17","BDGE April 47","552922625078231040","04/06/2020","With Rookie","Free Agent","12","superflex","TEprem",156,13,10
+"18","BDGE April 48","552997618115149824","04/06/2020","No Rookie","Free Agent","12","superflex","TEstand",132,11,11
+"19","BDGE April 49","553045345929129984","04/06/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,10
+"20","BDGE April 50","553051474032013312","04/06/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,9
+"21","BDGE April 51","553246956757245952","04/07/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,8
+"22","BDGE April 52","553276883606302720","04/07/2020","With Rookie","Free Agent","12","superflex","TEstand",144,12,9
+"23","BDGE April 53","553342349209460736","04/07/2020","With Rookie","Free Agent","12","superflex","TEprem",180,15,10
+"24","BDGE April 54","553356504084045824","04/07/2020","With Rookie","Free Agent","12","superflex","TEstand",132,11,11
+"25","BDGE April 55","553401273012695040","04/07/2020","With Rookie","Free Agent","12","superflex","TEstand",168,14,10
+"26","BDGE April 56","553409324373487616","04/07/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,8
+"27","BDGE April 57","553627267060113408","04/08/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,9
+"28","BDGE April 58","553683732988145664","04/08/2020","With Rookie","Free Agent","12","superflex","TEprem",180,15,10
+"29","BDGE April 59","553724934525530112","04/08/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,9
+"30","BDGE April 60","553732538128830464","04/08/2020","With Rookie","Free Agent","12","superflex","TEstand",132,11,11
+"31","BDGE April 61","554004054975254528","04/09/2020","With Rookie","Free Agent","12","superflex","TEstand",132,11,9
+"32","BDGE April 62","554088964700311552","04/09/2020","With Rookie","Free Agent","12","superflex","TEstand",132,11,11
+"33","BDGE April 63","554337035534835712","04/10/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,9
+"34","BDGE April 64","554398273540952064","04/10/2020","With Rookie","Free Agent","12","superflex","TEstand",144,12,7
+"35","BDGE April 65","554462407876894720","04/10/2020","With Rookie","Free Agent","12","superflex","TEstand",132,11,10
+"36","BDGE April 66","554509976090927104","04/10/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,9
+"37","BDGE April 67","554526765599064064","04/10/2020","With Rookie","Free Agent","12","superflex","TEprem",156,13,9
+"38","BDGE April 68","554711256735256576","04/11/2020","With Rookie","Free Agent","12","superflex","TEstand",144,12,11
+"39","BDGE April 69","554094111458959360","04/11/2020","With Rookie","Free Agent","12","superflex","TEstand",132,11,9
+"40","BDGE April 70","554851872752619520","04/11/2020","With Rookie","Free Agent","12","superflex","TEprem",180,15,9
+"41","BDGE April 71","554867234063908864","04/11/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,9
+"42","BDGE April 72","555284424225906688","04/13/2020","With Rookie","Free Agent","12","superflex","TEstand",144,12,10
+"43","BDGE April 73","555231619556913152","04/13/2020","With Rookie","Free Agent","12","superflex","TEstand",168,14,11
+"44","BDGE April 74","555516206267412480","04/13/2020","With Rookie","Free Agent","12","superflex","TEstand",180,15,8
+"45","BDGE April 75","555599865492049920","04/13/2020","With Rookie","Free Agent","12","superflex","TEprem",156,13,11
+"46","BDGE April 76","555826632634269696","04/14/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,9
+"47","BDGE April 77","555887949454868480","04/14/2020","With Rookie","Free Agent","12","superflex","TEstand",168,14,12
+"48","BDGE April 78","555901551670820864","04/14/2020","With Rookie","Free Agent","12","superflex","TEprem",168,14,12
+"49","BDGE April 79","555946960390934528","04/14/2020","With Rookie","Free Agent","12","superflex","TEstand",168,14,8
+"50","BDGE April 80","556131476818460672","04/15/2020","With Rookie","Free Agent","12","superflex","TEstand",204,17,10
+"51","BDGE April 82","556261313801977856","04/15/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,8
+"52","BDGE April 83","556284860293283840","04/15/2020","With Rookie","Free Agent","12","superflex","TEprem",144,12,9
+"53","BDGE April 84","556525550707445760","04/16/2020","With Rookie","Free Agent","12","superflex","TEstand",192,16,9
+"54","BDGE April 85","556631238917894144","04/16/2020","With Rookie","Free Agent","12","superflex","TEstand",144,12,9
+"55","BDGE April 86","556880281672814592","04/17/2020","With Rookie","Free Agent","12","superflex","TEstand",180,15,11
+"56","BDGE April 87","556983221433565184","04/17/2020","With Rookie","Free Agent","12","superflex","TEstand",180,15,7
+"57","BDGE April 89","556277798103285760","04/18/2020","Rookie","Free Agent","10","rookie","Rookie",40,4,7
+"58","BDGE April 91","557377084832018432","04/18/2020","With Rookie","Free Agent","12","superflex","TEstand",168,14,8
+"59","BDGE April 92","557408836139945984","04/18/2020","With Rookie","Free Agent","12","superflex","TEstand",156,13,10
+"60","BDGE April 93","557602565584867328","04/19/2020","With Rookie","Free Agent","12","superflex","TEstand",192,16,9
+"61","BDGE April 94","557661466460229632","04/19/2020","With Rookie","Free Agent","12","superflex","TEstand",168,14,8
+"62","BDGE April 95","557994386830659584","04/20/2020","With Rookie","Free Agent","12","superflex","TEstand",156,13,8
+"63","BDGE April 96","558049492024340480","04/20/2020","With Rookie","Free Agent","12","superflex","TEstand",168,14,8
+"64","BDGE April 97","558060257284370432","04/20/2020","With Rookie","Free Agent","12","superflex","TEstand",192,16,8
+"65","BDGE April 98","558091311489929216","04/20/2020","With Rookie","Free Agent","12","superflex","TEstand",144,12,9
+"66","BDGE April 99","558126083308113920","04/20/2020","With Rookie","Free Agent","12","superflex","TEstand",168,14,8
+"67","BDGE April 100","558325855010680832","04/21/2020","With Rookie","Free Agent","12","superflex","TEstand",192,16,9
+"68","BDGE April 101","558343478293295104","04/21/2020","With Rookie","Free Agent","12","superflex","TEstand",180,15,10
+"69","BDGE April 102","558429134301253632","04/21/2020","With Rookie","Free Agent","12","superflex","TEstand",192,16,8
+"70","BDGE April 103","558785011627687936","04/22/2020","With Rookie","Free Agent","12","superflex","TEstand",180,15,10
+"71","BDGE April 104","559431980263321600","04/24/2020","With Rookie","Free Agent","12","superflex","TEstand",192,16,9
+"72","BDGE April 105","559625043413766144","04/24/2020","Rookie","Free Agent","12","rookie","Rookie",48,4,9
+"73","BDGE April 106","559778165368680448","04/25/2020","With Rookie","Free Agent","12","superflex","TEstand",240,20,8
+"74","BDGE April 107","559831531397050368","04/25/2020","With Rookie","Free Agent","12","superflex","TEstand",240,20,7
+"75","BDGE April 108","559898422369746944","04/25/2020","Rookie","Free Agent","12","rookie","Rookie",48,4,9
+"76","BDGE April 109","560130452952813568","04/26/2020","With Rookie","Draft","12","superflex","TEstand",240,20,11
+"77","BDGE April 110","560202194363940864","04/26/2020","With Rookie","Draft","12","superflex","TEstand",168,14,8
+"78","BDGE April 111","560232923969306624","04/26/2020","With Rookie","Draft","12","superflex","TEstand",168,14,7
+"79","BDGE April 112","560268759083147264","04/26/2020","With Rookie","Draft","12","superflex","TEstand",144,12,9
+"80","BDGE April 114","560512709871923200","04/27/2020","With Rookie","Draft","12","superflex","TEstand",168,14,12
+"81","BDGE April 115","560570148676485120","04/27/2020","With Rookie","Draft","12","superflex","TEstand",168,14,8
+"82","BDGE April 117","560631558954147840","04/27/2020","Rookie","Draft","10","rookie","Rookie",30,3,8
+"83","BDGE April 120","560872970260819968","04/28/2020","With Rookie","Draft","12","superflex","TEstand",168,14,11
+"84","BDGE April 121","560911075978108928","04/28/2020","With Rookie","Draft","12","superflex","TEstand",168,14,10
+"85","BDGE April 126","561300723519651840","04/29/2020","With Rookie","Draft","12","superflex","TEstand",180,15,9
+"86","BDGE April 127","561332406119460864","04/29/2020","With Rookie","Draft","12","superflex","TEprem",168,14,11
+"87","BDGE April 128","561573199672827904","04/30/2020","With Rookie","Draft","12","superflex","TEprem",180,15,8
+"88","BDGE May 1","562051792043126784","05/1/2020","Rookie","Draft","12","rookie","Rookie",48,4,12
+"89","BDGE May 2","562084976755105792","05/1/2020","With Rookie","Draft","12","superflex","TEstand",144,12,11
+"90","BDGE May 3","563543989239525376","05/5/2020","With Rookie","Draft","12","superflex","TEstand",168,14,12
+"91","BDGE May 4","565957852627984384","05/12/2020","Rookie","Draft","12","rookie","Rookie",60,5,7
+"92","BDGE May 5","567445005038071808","05/16/2020","With Rookie","Draft","12","superflex","TEprem",144,12,11
+"93","BDGE May 6","567470490400718848","05/16/2020","With Rookie","Draft","12","superflex","TEstand",132,11,10
+"94","BDGE May 7","567486263936757760","05/16/2020","With Rookie","Draft","12","superflex","TEstand",132,11,11
+"95","BDGE May 8","567922211260911616","05/17/2020","With Rookie","Draft","12","superflex","TEstand",228,19,10
+"96","BDGE May 9","568574259797827584","05/19/2020","With Rookie","Draft","12","superflex","TEstand",144,12,10
+"97","BDGE May 10","571095115485405184","05/26/2020","With Rookie","Draft","12","superflex","TEstand",192,16,9
+"98","BDGE May 11","571426881716244480","05/27/2020","With Rookie","Draft","12","superflex","TEstand",180,15,10
+"99","BDGE June 1","574470492013023232","06/4/2020","With Rookie","Draft","12","superflex","TEstand",156,13,10
+"100","BDGE June 2","574714161372352512","06/5/2020","With Rookie","Draft","10","superflex","TEstand",150,15,10
+"101","BDGE June 3","575007570094432256","06/6/2020","With Rookie","Draft","12","superflex","TEprem",180,15,7
+"102","BDGE June 4","575129584107724800","06/6/2020","With Rookie","Draft","12","superflex","TEprem",180,15,8
+"103","BDGE June 5","575361400574713856","06/7/2020","With Rookie","Draft","12","superflex","TEprem",180,15,8
+"104","BDGE June 6","575393133366001664","06/7/2020","With Rookie","Draft","12","superflex","TEprem",180,15,8
+"105","BDGE June 7","576202074760916992","06/9/2020","With Rookie","Draft","12","superflex","TEprem",168,14,10
+"106","BDGE June 8","576558139885789184","06/10/2020","With Rookie","Draft","12","superflex","TEprem",180,15,8
+"107","BDGE June 9","576596449266008064","06/10/2020","With Rookie","Draft","12","superflex","TEprem",156,13,10
+"108","BDGE June 10","576623231897747456","06/13/2020","With Rookie","Draft","10","standard","TEstand",140,14,8
+"109","BDGE June 16","581624240906731520","06/24/2020","With Rookie","Draft","12","standard","TEstand",168,14,10
+"110","BDGE June 17","582398339614552064","06/26/2020","With Rookie","Draft","12","standard","TEstand",168,14,9
+"111","BDGE July 1","584629963727093760","07/2/2020","With Rookie","Draft","12","superflex","TEstand",156,13,10
+"112","BDGE July 3","588030147332972544","07/12/2020","With Rookie","Draft","12","superflex","TEstand",168,14,8
+"113","BDGE July 4","588136802284515328","07/12/2020","With Rookie","Draft","10","superflex","TEstand",130,13,7
+"114","BDGE August 3","598728621472935936","08/10/2020","With Rookie","Draft","12","standard","TEstand",156,13,10
+"115","BDGE August 4","599082107645517824","08/11/2020","With Rookie","Draft","12","standard","TEstand",168,14,11
+"116","BDGE August 7","593956313076121600","08/16/2020","With Rookie","Draft","12","standard","TEstand",156,13,12
+"117","BDGE August 8","601257661224247296","08/17/2020","With Rookie","Draft","12","standard","TEstand",168,14,9
